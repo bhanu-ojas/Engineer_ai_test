@@ -1,0 +1,49 @@
+<div class="container-fluid px-5 py-3">
+    <div class="row">
+        <div class="col-12 py-3">
+            <!-- Search for title start here -->
+            <div class="form-group float-right w-25 mb-4">
+                <input class="py-2 px-3 w-100" type="text" [(ngModel)]="titleFilter.title" placeholder="Search by title here...">
+            </div>
+            <!-- Search for title end here -->
+            <!-- Table for displaying data start here -->
+            <table *ngIf="(dataList | filterBy: titleFilter)?.length" class="table table-striped table-bordered">
+                <thead class="bg-primary text-white py-2">
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Url</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col">Author</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of dataList | filterBy: titleFilter" (click)="openModal(template)">
+                    <td class="align-middle w-25">{{data.title}}</td>
+                    <td class="align-middle">{{data.url}}</td>
+                    <td class="align-middle w-25">{{data.created_at}}</td>
+                    <td class="align-middle">{{data.author}}</td> 
+                    <!-- Modal start here -->
+                    <ng-template #template>
+                        <div class="modal-header">
+                            <h4 class="modal-title pull-left">{{data.title}}</h4>
+                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{data | json}}
+                        </div>
+                    </ng-template>
+                    <!-- Modal end here -->
+                  </tr>
+                </tbody>
+            </table>
+            <!-- Table for displaying data end here -->
+            <!-- Nodata found start here -->
+            <div *ngIf="(dataList | filterBy: titleFilter)?.length === 0">
+                <h3 class="text-center py-5 my-5">No matching data in table.</h3>
+            </div>
+            <!-- Nodata found end here -->
+        </div>
+    </div>
+</div>
